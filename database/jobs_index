@@ -1,0 +1,49 @@
+curl -XPOST https://search-content-a7f4e4hove5zntycwwpgtwtb5a.eu-west-1.es.amazonaws.com/jobs -d '{
+    "settings" : {
+        "number_of_shards" : 1
+    },
+    "mappings" : {
+        "listing" : {
+            "properties" : {
+                "url" : { "type" : "string", "index" : "not_analyzed" },
+                "source" : { "type" : "string", "index" : "not_analyzed" },
+                "author" : { "type" : "string", "index" : "not_analyzed" },
+                "updated_at" : { "type" : "date" },
+                "published_on" : { "type" : "date" },
+                "expires_on" : { "type" : "date" },
+                "title" : { "type" : "string", "analyzer" : "english" },
+                "image_url" : { "type" : "string", "index" : "not_analyzed" },
+                "content" : { "type" : "string", "analyzer" : "english" },
+                "tags" : { "type" : "string", "analyzer" : "english" },
+                "company" : { "type" : "string", "analyzer" : "english" },
+                "company_website" : { "type" : "string", "index" : "not_analyzed" },
+                "location" : { "type" : "string", "index" : "not_analyzed" },
+                "renumeration" : { "type" : "string", "index" : "not_analyzed" },
+                "renumeration_min" : { "type" : "integer" },
+                "renumeration_max" : { "type" : "integer" },
+                "renumeration_currency" : { "type" : "string", "index" : "not_analyzed" },
+                "renumeration_unit" : { "type" : "string", "index" : "not_analyzed" },
+                "view_count" : { "type" : "integer" },
+                "employment_type" : { "type" : "string", "index" : "not_analyzed" },
+                "spider_version" : { "type" : "short" }
+            }
+        }
+    }
+}'
+
+curl -XPUT 'https://search-content-a7f4e4hove5zntycwwpgtwtb5a.eu-west-1.es.amazonaws.com/jobs/' -d '{
+    "settings" : {
+        "index" : {
+            "number_of_shards" : 3,
+            "number_of_replicas" : 2
+        }
+    }
+}'
+
+curl -XPOST 'https://search-content-a7f4e4hove5zntycwwpgtwtb5a.eu-west-1.es.amazonaws.com/jobs/_refresh'
+
+curl -XPOST 'https://search-content-a7f4e4hove5zntycwwpgtwtb5a.eu-west-1.es.amazonaws.com/jobs/listing' -d '{
+  "properties": {
+     "view_count" : { "type" : "integer" }
+  }
+}'
